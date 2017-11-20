@@ -2,7 +2,7 @@ class OrdersController < ApplicationController
 	load_and_authorize_resource :user
 	load_and_authorize_resource :order
 
-	def index
+	def index 								#GET    /user/:user_id/orders
 		if @user.waiter?
 			@orders = @user.orders
 			respond_to do |format|
@@ -15,8 +15,12 @@ class OrdersController < ApplicationController
 		end
 	end
 
-	def create
+	def create 								#POST   /user/:user_id/orders
+		if current_user.admin?
+			@order.user = current_user
+		end
 		if @order.save
+			#binding.pry
 			respond_to do |format|
 	    	format.html { redirect_to user_order_path(@user, @order), notice: 'Order successfully created.' }
 	  	end
@@ -28,7 +32,7 @@ class OrdersController < ApplicationController
 		end
 	end
 
-	def update
+	def update 								#PUT    /user/:user_id/orders/:id
 		if @order.update(order_params)
 			respond_to do |format|
 	    	format.html { redirect_to user_order_path(@user, @order), notice: 'Order successfully updated.' }
@@ -41,7 +45,7 @@ class OrdersController < ApplicationController
 		end
 	end
 
-	def destroy
+	def destroy								#DELETE /user/:user_id/orders/:id
 		if @order.destroy
 			flash[:notice] = "Order deleted."
 		else

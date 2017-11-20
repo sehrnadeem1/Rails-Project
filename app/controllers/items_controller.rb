@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
 	load_and_authorize_resource
 
-	def create
+	def create 								#POST /items/:id
 		if @item.save
 			respond_to do |format|
     		format.html { redirect_to @item, notice: 'Item successfully added.' }
@@ -14,7 +14,7 @@ class ItemsController < ApplicationController
 		end
 	end
 
-	def update
+	def update 								#PUT /items/:id
 		if @item.update(item_params)
 			respond_to do |format|
 				format.html { redirect_to @item, notice: 'Item successfully updated.' }
@@ -27,7 +27,7 @@ class ItemsController < ApplicationController
 		end
 	end
 
-	def destroy
+	def destroy 							#DELETE /items/:id
 		if @item.destroy
 			flash[:notice] = 'Item successfully deleted'
 		else

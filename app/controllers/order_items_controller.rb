@@ -2,7 +2,7 @@ class OrderItemsController < ApplicationController
 	load_and_authorize_resource :order
 	load_and_authorize_resource :order_item, through: :order
 
-	def new
+	def new 									#GET    /order/:order_id/order_items/new
 		@items = Item.all
 		respond_to do |format|
   		format.js
@@ -10,20 +10,18 @@ class OrderItemsController < ApplicationController
 		end
 	end
 
-	def edit
+	def edit 									#GET    /order/:order_id/order_items/:id/edit
 		@items = Item.all
 		respond_to do |format|
   		format.html
 		end
 	end
 
-	def create
+	def create 								#POST   /order/:order_id/order_items
 		@items = Item.all
 		if @order_item.item.quantity >= @order_item.quantity
-			#binding.pry
 			if @order_item.save
 				@order_item.item.update(quantity: (@order_item.item.quantity - @order_item.quantity))
-				#redirect_to [@order, @order_item]
 				flash[:notice] = 'Order item successfully added.'
 				respond_to do |format|
 					format.js
@@ -45,7 +43,7 @@ class OrderItemsController < ApplicationController
 		end
 	end
 
-	def update
+	def update 								#PUT    /order/:order_id/order_items/:id
 		@items = Item.all
 		if check_updated_quantity
 			if @order_item.update(order_item_params)
@@ -66,7 +64,7 @@ class OrderItemsController < ApplicationController
 		end
 	end
 
-	def destroy
+	def destroy								#DELETE /order/:order_id/order_items/:id
 		if @order_item.destroy
 			flash[:notice] = 'Order item successfully deleted.'
 		else

@@ -1,7 +1,7 @@
 class WaitersController < ApplicationController
 	before_action :authenticate_user!
 
-	def index
+	def index										#GET    /waiters
 		if current_user.admin?
 			@waiters = User.waiter
 
